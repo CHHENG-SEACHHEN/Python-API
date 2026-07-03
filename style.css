@@ -295,14 +295,12 @@ table th {
 }
 
 .text-center {
-  border: 1px solid #88E788;
   display: flex;
   align-items: center;
 }
 
 td img {
   width: 10%;
-  float: left;
 }
 
 /* ---------- Footer ---------- */

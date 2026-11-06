@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flamingo - Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
+      integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-pink-400 h-[90px] p-2">
+      <div class="flex justify-between">
+        <div class>
+          <a href="new home.html">
+            <img
+              src="/template/Image/Untitled61_20230505102830.png"
+              alt="flamingo logo"
+              class="rounded-full size-[67px]"
+            />
+          </a>
+        </div>
+        <div class="flex items-center">
+          <a href="new home.html">
+            <span class="text-pink-100 font-bold text-[24px]"
+              >Flamingo Swain Book</span
+            >
+          </a>
+        </div>
+        <div class="flex items-center">
+          <button
+            id="menuToggle"
+            title="Pages"
+            class="fa-solid fa-bars text-[24px] rounded-lg hover:bg-gray-300 text-pink-800"
+          ></button>
+        </div>
+      </div>
+      <div>
+        <nav
+          id="dropdownMenu"
+          class="hidden absolute right-5 w-48 rounded-lg bg-white shadow-xl border border-gray-100 overflow-hidden z-50"
+        >
+          <ul
+            class="divide-y divide-gray-100 text-sm font-medium text-gray-700"
+          >
+            <li>
+              <a
+                href="new home.html"
+                class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="new about.html"
+                class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                href="new sale.html"
+                class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                >Sales</a
+              >
+            </li>
+            <li>
+              <a
+                href="new contact.html"
+                class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                >Contact</a
+              >
+            </li>
+            <li>
+              <a
+                href="new checkout.html"
+                class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                >Checkout</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const dropdownMenu = document.getElementById("dropdownMenu");
+
+      // Toggle menu visibility
+      menuToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("hidden");
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !dropdownMenu.contains(e.target) &&
+          !menuToggle.contains(e.target)
+        ) {
+          dropdownMenu.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

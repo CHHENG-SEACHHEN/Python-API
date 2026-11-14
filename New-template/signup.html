@@ -1,109 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-    href="{{ url_for('static', filename='css/output.css') }}"
-    rel="stylesheet"
+      href="{{ url_for('static', filename='css/output.css') }}"
+      rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" crossorigin="anonymous" />
-</head>
-<body class="bg-white h-screen flex items-center justify-center">
-
-<!-- container for signup UI -->
-<div class="w-100 bg-gray-200 p-4 border border-black">
-    <div class="w-full bg-gray-400 flex flex-col justify-center text-center"> 
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="bg-white h-screen flex items-center justify-center">
+    <!-- container for signup UI -->
+    <div class="w-100 bg-gray-200 p-4 border border-black">
+      <div class="w-full bg-gray-400 flex flex-col justify-center text-center">
         <!-- Header -->
-        <div class="flex justify-start font-bold text-[20px] p-2">Create Account</div>
+        <div class="flex justify-start font-bold text-[20px] p-2">
+          Create Account
+        </div>
 
         <!-- Signup interface -->
         <div class="flex flex-col items-center w-80 px-2">
-            <!-- Username Box -->
-            <div class="flex flex-col w-full pb-1">
-                <label class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-user mr-1"></i></span>Username:</label>
-                <input class="flex items-center justify-center px-1 bg-white" type="text" placeholder="Username" id="userName"> 
-            </div>
+          <!-- Username Box -->
+          <div class="flex flex-col w-full pb-1">
+            <label class="font-bold flex items-start justify-start"
+              ><span class="w-7 text-center"
+                ><i class="fa-solid fa-user mr-1"></i></span
+              >Username:</label
+            >
+            <input
+              class="flex items-center justify-center px-1 bg-white"
+              type="text"
+              placeholder="Username"
+              id="userName"
+            />
+          </div>
 
-            <!-- Email Box -->
-            <div class="flex flex-col w-full pb-1">
-                <label class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-envelope mr-1"></i></span>Email:</label>
-                <input class="flex items-center justify-center px-1 bg-white" type="email" placeholder="Email Address" id="email"> 
-            </div>
+          <!-- Email Box -->
+          <div class="flex flex-col w-full pb-1">
+            <label class="font-bold flex items-start justify-start"
+              ><span class="w-7 text-center"
+                ><i class="fa-solid fa-envelope mr-1"></i></span
+              >Email:</label
+            >
+            <input
+              class="flex items-center justify-center px-1 bg-white"
+              type="email"
+              placeholder="Email Address"
+              id="email"
+            />
+          </div>
 
-            <!-- Password Box -->
-            <div class="flex flex-col w-full pb-1">
-                <label class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-key mr-1"></i></span>Password:</label>
-                <input class="flex items-center justify-center px-1 bg-white" type="password" placeholder="Password" id="userPassword">
-            </div>
+          <!-- Password Box -->
+          <div class="flex flex-col w-full pb-1">
+            <label class="font-bold flex items-start justify-start"
+              ><span class="w-7 text-center"
+                ><i class="fa-solid fa-key mr-1"></i></span
+              >Password:</label
+            >
+            <input
+              class="flex items-center justify-center px-1 bg-white"
+              type="password"
+              placeholder="Password"
+              id="userPassword"
+            />
+          </div>
 
-            <!-- Confirm Password Box -->
-            <div class="flex flex-col w-full pb-1">
-                <label class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-lock mr-1"></i></span>Confirm:</label>
-                <input class="flex items-center justify-center px-1 bg-white" type="password" placeholder="Confirm Password" id="confirmPassword">
-            </div>                
+          <!-- Confirm Password Box -->
+          <div class="flex flex-col w-full pb-1">
+            <label class="font-bold flex items-start justify-start"
+              ><span class="w-7 text-center"
+                ><i class="fa-solid fa-lock mr-1"></i></span
+              >Confirm:</label
+            >
+            <input
+              class="flex items-center justify-center px-1 bg-white"
+              type="password"
+              placeholder="Confirm Password"
+              id="confirmPassword"
+            />
+          </div>
         </div>
 
         <!-- Term and agreement -->
         <div class="flex font-bold text-[15px] px-2 pt-1">
-            <input type="checkbox" class="flex justify-center items-center" id="termAgreement">
-            <span class="pl-1 flex justify-start items-center">I agree to the <a href="#" class="text-blue-800 hover:underline pl-1">Terms.</a></span>
+          <input
+            type="checkbox"
+            class="flex justify-center items-center"
+            id="termAgreement"
+          />
+          <span class="pl-1 flex justify-start items-center"
+            >I agree to the
+            <a href="#" class="text-blue-800 hover:underline pl-1"
+              >Terms.</a
+            ></span
+          >
         </div>
 
-        <!-- Button (w-full Sign Up) -->        
+        <!-- Button (w-full Sign Up) -->
         <div class="flex flex-col p-2">
-            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" id="signUP">Sign Up</button>
+          <button
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+            id="signUP"
+          >
+            Sign Up
+          </button>
         </div>
 
         <!-- Back to login link -->
         <div class="p-2 text-sm">
-            <a href="/" class="text-blue-800 hover:underline">Already have an account? Sign In</a>
+          <a href="/" class="text-blue-800 hover:underline"
+            >Already have an account? Sign In</a
+          >
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-document.getElementById('signUP').addEventListener('click', async function() {
-    const username = document.getElementById('userName').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('userPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const isAgreed = document.getElementById('termAgreement').checked;
+    <script>
+      document
+        .getElementById("signUP")
+        .addEventListener("click", async function () {
+          const username = document.getElementById("userName").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("userPassword").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const isAgreed = document.getElementById("termAgreement").checked;
 
-    // Frontend check to make sure passwords match before sending
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-    }
+          // Frontend check to make sure passwords match before sending
+          if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+          }
 
-    try {
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+          try {
+            const response = await fetch("/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
                 username: username,
                 email: email,
                 password: password,
-                agreed: isAgreed
-            })
+                agreed: isAgreed,
+              }),
+            });
+
+            const data = await response.json();
+            alert(data.message);
+
+            if (response.ok && data.redirect) {
+              window.location.href = data.redirect;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong. Please try again.");
+          }
         });
-
-        const data = await response.json();
-        alert(data.message);
-        
-        if (response.ok && data.redirect) {
-            window.location.href = data.redirect;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Something went wrong. Please try again.');
-    }
-});
-</script>
-
-</body>
+    </script>
+  </body>
 </html>

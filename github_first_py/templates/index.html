@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users List</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 50%; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-white h-screen flex items-center justify-center">
+
+<!-- container for login UI -->
+<div class="w-100 bg-gray-200 p-4 border border-black">
+
+    <!-- Login UI (split into 5 section. [Header > actual login interface > term and agreement > button > Icon] )-->
+    <div class="w-full bg-gray-400 flex flex-col justify-center text-center"> 
+
+        <!-- Header -->
+        <div class="flex justify-start font-bold text-[20px] p-2">Login</div>
+
+        <!-- Login interface -->
+        <div class="flex flex-col items-center w-80 px-2">
+            <div class="flex flex-col w-full pb-1">
+                <label for="" class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-user mr-1"></i></span>Username:</label>
+                <input class="flex items-center justify-center px-1" type="text" placeholder="Username / Email" id="userName"> 
+            </div>
+
+            <div class="flex flex-col w-full pb-1">
+                <label for="" class="font-bold flex items-start justify-start"><span class="w-7 text-center"><i class="fa-solid fa-key mr-1"></i></span>Password:</label>
+                <input class="flex items-center justify-center px-1" type="text" placeholder="Password" id="userPassword">
+            </div>                
+        </div>
+
+        <!-- Term and agreement -->
+        <div class="flex font-bold text-[15px] px-2 pt-1">
+            <input type="checkbox" class="flex justify-center items-center" id="termAgreement">
+            <span class="pl-1 flex justify-start items-center">I agree to the <a href="#" class="text-blue-800 hover:underline pl-1">Terms and conditions.</a></span>
+        </div>
+
+        <!-- Button -->        
+        <div class="flex flex-row justify-between p-2">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" id="signIN">Sign In</button>
+            <button class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded" onclick="window.location.href='/signup_page'">Sign Up</button>
+        </div>
+
+        <!-- icon -->
+         <div class="flex justify-start font-bold text-[20px] px-2 pb-2 pt-1 gap-2">
+            <i class="fa-brands fa-telegram"></i>
+            <i class="fa-brands fa-facebook-f"></i>
+            <i class="fa-brands fa-tiktok"></i>
+            <i class="fa-brands fa-instagram"></i>
+         </div>
+    </div>
+</div>
+
+<script>
+async function sendAuthData(endpoint) {
+    const username = document.getElementById('userName').value;
+    const password = document.getElementById('userPassword').value;
+    const isAgreed = document.getElementById('termAgreement').checked;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                agreed: isAgreed
+            })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert(data.message);
+            // Handles page redirection if Flask sends a redirect route back
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again.');
+    }
+}
+
+document.getElementById('signIN').addEventListener('click', function() {
+    sendAuthData('/signin');
+});
+
+document.getElementById('signUP').addEventListener('click', function() {
+    sendAuthData('/signup');
+});
+</script>
+
+</body>
+</html>

@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Users List</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 50%; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f4f4f4; }
-    </style>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+    href="{{ url_for('static', filename='css/output.css') }}"
+    rel="stylesheet"
+    />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-white h-screen flex items-center justify-center">

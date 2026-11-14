@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 import mysql.connector
 
-app = Flask(__name__, template_folder='New template')
+app = Flask(
+    __name__,
+    template_folder='New-template',
+    static_folder='static'
+)
 
 def get_db():
     return mysql.connector.connect(

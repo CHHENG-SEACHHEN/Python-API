@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flamingo - Sale</title>
-    <link href="./output.css" rel="stylesheet">
+    <link
+    href="{{ url_for('static', filename='css/output.css') }}"
+    rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
@@ -24,10 +27,10 @@
         <div class="sm:float-left">
           <a href="/">
             <img
-              src="./image/Untitled61_20230505102830.png"
-              alt="flamingo logo"
-              class="rounded-full size-[67px]"
-            />
+                src="{{ url_for('static', filename='image/flamingo.png') }}"
+                alt="flamingo logo"
+                class="rounded-full size-[67px]"
+              />
           </a>
         </div>
         <div class="sm:flex sm:items-center">

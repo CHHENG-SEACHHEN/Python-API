@@ -201,6 +201,9 @@
   .absolute {
     position: absolute;
   }
+  .static {
+    position: static;
+  }
   .right-5 {
     right: calc(var(--spacing) * 5);
   }

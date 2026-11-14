@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,7 +15,6 @@
     />
   </head>
   <body>
-    <!-- Header -->
     <header
       class="bg-pink-400 h-[90px] p-2 lg:flex sm:justify-between sm:items-center"
     >
@@ -22,16 +22,16 @@
         class="max-lg:flex max-lg:justify-between sm:flex sm:items-center max-sm:items-center"
       >
         <div class="sm:float-left">
-          <a href="new home.html">
+          <a href="/">
             <img
-              src="/New template/image/Untitled61_20230505102830.png"
+              src="./image/flamingo.png"
               alt="flamingo logo"
               class="rounded-full size-[67px]"
             />
           </a>
         </div>
         <div class="sm:flex sm:items-center">
-          <a href="new home.html">
+          <a href="/">
             <span class="text-pink-100 font-bold text-[24px] ml-4"
               >Flamingo Swain Book</span
             >
@@ -55,42 +55,42 @@
           >
             <li>
               <a
-                href="new home.html"
+                href="/"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >Home</a
               >
             </li>
             <li>
               <a
-                href="new about.html"
+                href="/about"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >About</a
               >
             </li>
             <li>
               <a
-                href="new sale.html"
+                href="/sale"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >Sales</a
               >
             </li>
             <li>
               <a
-                href="new contact.html"
+                href="/contact"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >Contact</a
               >
             </li>
             <li>
               <a
-                href="new checkout.html"
+                href="/checkout"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >Checkout</a
               >
             </li>
             <li>
               <a
-                href="signin.html"
+                href="/login"
                 class="block px-4 py-3 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                 >Login</a
               >
@@ -101,20 +101,23 @@
 
       <div class="max-lg:hidden float-right">
         <nav>
-          <a href="new home.html" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+          <a href="/" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Home</a
           >
-          <a href="new about.html" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+          <a href="/about" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >About</a
           >
-          <a href="new sale.html" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+          <a href="/sale" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Sales</a
           >
-          <a href="new contact.html" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+          <a href="/contact" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Contact</a
           >
-          <a href="new checkout.html" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+          <a href="/checkout" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Checkout</a
+          >
+          <a href="/login" class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+            >Login</a
           >
         </nav>
       </div>
@@ -152,7 +155,7 @@
           <p>Check out all of our available books!</p>
           <div class="flex justify-center">
             <a
-              href="new sale.html"
+              href="/sale"
               class="border-2 border-pink-400 p-4 rounded-lg my-4 text-pink-600 font-semibold hover:bg-pink-400 hover:text-white hover:border-pink-600"
             >
               Explore Sales
@@ -192,13 +195,11 @@
       const menuToggle = document.getElementById("menuToggle");
       const dropdownMenu = document.getElementById("dropdownMenu");
 
-      // Toggle menu visibility
       menuToggle.addEventListener("click", (e) => {
         e.stopPropagation();
         dropdownMenu.classList.toggle("hidden");
       });
 
-      // Close menu when clicking outside
       document.addEventListener("click", (e) => {
         if (
           !dropdownMenu.contains(e.target) &&

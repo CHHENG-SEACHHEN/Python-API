@@ -15,6 +15,30 @@ def get_db():
 def index():
     return render_template('new home.html')
 
+@app.route('/about')
+def about():
+    return render_template('new about.html')
+
+
+@app.route('/sale')
+def sale():
+    return render_template('new sale.html')
+
+
+@app.route('/contact')
+def contact():
+    return render_template('new contact.html')
+
+
+@app.route('/checkout')
+def checkout():
+    return render_template('new checkout.html')
+
+
+@app.route('/login')
+def login():
+    return render_template('signin.html')
+
 # Route to render the Signup page
 @app.route('/signup_page')
 def signup_page():

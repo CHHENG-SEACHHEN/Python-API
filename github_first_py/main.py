@@ -5,9 +5,9 @@ app = Flask(__name__)
 
 def get_db():
     return mysql.connector.connect(
-        host="localhost:3306",
+        host="localhost",
         user="root",
-        password="nenen9000",
+        password="Callme099",
         database="python_sql"
     )
 
@@ -108,7 +108,7 @@ def cashier_dashboard():
 
 @app.route('/user_dashboard')
 def user_dashboard():
-    return render_template('user.html')
+    return render_template('new home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

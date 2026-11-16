@@ -14,7 +14,14 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer" />
   </head>
-  <body class="bg-white h-screen flex items-center justify-center">
+  <body class="min-h-screen flex flex-col">
+    <header class="w-full p-4">
+      <i class="fa-solid fa-arrow-left-long text-pink-600 mr-4"></i>
+      <a href="/" class="inline-flex items-center text-pink-600 font-bold text-lg hover:underline">
+        Back to Home
+      </a>
+    </header>
+  <div class="flex-1 flex items-center justify-center p-4">
 <!-- Login container -->
     <div class="border-2 border-pink-400 rounded-lg w-100 bg-pink-100 shadow-pink-300 shadow-lg">
       <div class="p-4">
@@ -46,6 +53,7 @@
          </div>
       </div>
     </div>
+  </div>
 
     <script>
       async function sendAuthData(endpoint) {

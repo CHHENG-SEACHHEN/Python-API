@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flamingo - Sale</title>
+    <title>Flamingo - Contact</title>
     <link
       href="{{ url_for('static', path='css/output.css') }}"
       rel="stylesheet"
@@ -47,6 +47,10 @@
             title="Pages"
             class="fa-solid fa-bars text-[24px] rounded-lg hover:bg-gray-300 text-pink-800"
           ></button>
+          <a
+            href="/login"
+            class="text-gray-200 transition-colors font-semibold hover:underline hover:text-white"
+            ><i class="fa-solid fa-circle-user fa-2xl"></i
         </div>
       </div>
       <div>
@@ -116,13 +120,13 @@
             >About</a
           >
           <a
-            href="new sale.html"
-            class="text-white mx-4 py-[32px] transition-colors font-semibold border-b-4 border-white"
+            href="/sale"
+            class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Sales</a
           >
           <a
-            href="/contact"
-            class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+            href="new contact.html"
+            class="text-white mx-4 py-[32px] transition-colors font-semibold border-b-4 border-white"
             >Contact</a
           >
           <a
@@ -138,16 +142,6 @@
         </nav>
       </div>
     </header>
-
-    <div
-      class="flex justify-center mb-4 bg-pink-100 border-b-2 border-pink-400 sm:border-b-4"
-    >
-      <input
-        id="search"
-        class="inline-block border border-2 border-pink-600 rounded-full px-4 h-12 w-[300px] py-2 mt-4 mb-2"
-        placeholder="Seach your books here"
-      />
-    </div>
 
     <footer class="bg-pink-400 h-[90px]">
       <div class="flex justify-center text-white">

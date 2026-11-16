@@ -8,7 +8,7 @@
       href="{{ url_for('static', path='css/output.css') }}"
       rel="stylesheet"
     />
-    <link href="/static/css/output.css" rel="stylesheet"/>
+    <link href="/static/css/output.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
@@ -44,8 +44,13 @@
           <button
             id="menuToggle"
             title="Pages"
-            class="fa-solid fa-bars text-[24px] rounded-lg hover:bg-gray-300 text-pink-800"
+            class="fa-solid fa-bars text-[24px] rounded-lg hover:bg-gray-300 text-pink-800 mr-3"
           ></button>
+          <a
+            href="/login"
+            class="text-gray-200 transition-colors font-semibold hover:underline hover:text-white"
+            ><i class="fa-solid fa-circle-user fa-2xl"></i
+          ></a>
         </div>
       </div>
       <div>
@@ -101,7 +106,6 @@
           </ul>
         </nav>
       </div>
-
       <div class="max-lg:hidden float-right">
         <nav>
           <a
@@ -167,7 +171,9 @@
         Start Explore
       </div>
       <div>
-        <div class="border-2 bg-pink-50 mt-2 p-3 rounded-lg text-center mb-5">
+        <div
+          class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg text-center mb-5"
+        >
           <h3 class="font-bold text-xl text-pink-600">Featured Books</h3>
           <p>Check out all of our available books!</p>
           <div class="flex justify-center">
@@ -187,15 +193,15 @@
         What we offers
       </div>
       <div>
-        <div class="border-2 bg-pink-50 mt-2 p-3 rounded-lg">
+        <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
           <h3 class="font-semibold text-lg">📦 Fast Delivery</h3>
           <p>Get your books delivered quickly and safely.</p>
         </div>
-        <div class="border-2 bg-pink-50 mt-2 p-3 rounded-lg">
+        <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
           <h3 class="font-semibold text-lg">📖 Wide Selection</h3>
           <p>Explore a vast collection of books across genres.</p>
         </div>
-        <div class="border-2 bg-pink-50 mt-2 p-3 rounded-lg">
+        <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
           <h3 class="font-semibold text-lg">💰 Great Prices</h3>
           <p>Enjoy competitive prices and special offers.</p>
         </div>

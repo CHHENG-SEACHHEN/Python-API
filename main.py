@@ -53,27 +53,27 @@ class SignUpRequest(BaseModel):
 # --- HTML Page Routes ---
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse(request, "new home.html", {})
+    return templates.TemplateResponse(request, "home.html", {})
 
 
 @app.get("/about")
 def about(request: Request):
-    return templates.TemplateResponse(request, "new about.html", {})
+    return templates.TemplateResponse(request, "about.html", {})
 
 
 @app.get("/sale")
 def sale(request: Request):
-    return templates.TemplateResponse(request, "new sale.html", {})
+    return templates.TemplateResponse(request, "sale.html", {})
 
 
 @app.get("/contact")
 def contact(request: Request):
-    return templates.TemplateResponse(request, "new contact.html", {})
+    return templates.TemplateResponse(request, "contact.html", {})
 
 
 @app.get("/checkout")
 def checkout(request: Request):
-    return templates.TemplateResponse(request, "new checkout.html", {})
+    return templates.TemplateResponse(request, "checkout.html", {})
 
 
 @app.get("/login")

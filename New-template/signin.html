@@ -5,55 +5,96 @@
     <title>Users List</title>
     <link
       href="{{ url_for('static', path='css/output.css') }}"
-      rel="stylesheet" />
-     <link href="/static/css/output.css" rel="stylesheet"/> 
+      rel="stylesheet"
+    />
+    <link href="/static/css/output.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
       integrity="..."
       crossorigin="anonymous"
-      referrerpolicy="no-referrer" />
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body class="min-h-screen flex flex-col">
     <header class="w-full p-4">
       <i class="fa-solid fa-arrow-left-long text-pink-600 mr-4"></i>
-      <a href="/" class="inline-flex items-center text-pink-600 font-bold text-lg hover:underline">
+      <a
+        href="/"
+        class="inline-flex items-center text-pink-600 font-bold text-lg hover:underline"
+      >
         Back to Home
       </a>
     </header>
-  <div class="flex-1 flex items-center justify-center p-4">
-<!-- Login container -->
-    <div class="border-2 border-pink-400 rounded-lg w-100 bg-pink-100 shadow-pink-300 shadow-lg">
-      <div class="p-4">
-        <div class="font-bold text-pink-600 text-xl text-center my-4">Login ౨ৎ ⋆｡˚</div>
-        <!-- Username -->
-        <div>
-          <div class="font-semibold text-pink-600"><i class="fa-solid fa-user mr-1"></i>Username ⊹ ࣪ ˖ ໒꒱</div>
-          <input id="userName" type="text" class="w-full border border-pink-200 rounded-lg px-2 py-1 mt-2 mb-2" placeholder="Username / Email"/>
-        </div>
-        <!-- Password  -->
-        <div>
-          <div class="font-semibold text-pink-600"><i class="fa-solid fa-key mr-1"></i>Password ⊹ ࣪ ˖ ໒꒱</div>
-          <input id="userPassword" type="password" class="w-full border border-pink-200 rounded-lg px-2 py-1 mt-2 mb-2" placeholder="Password"/>
-        </div>
-        <br><br><br>
-        <!-- T&C -->
-         <div>
-          <div class="flex">
-            <input id="termAgreement" type="checkbox" class="flex items-center"/>
-            <span class="text-sm text-pink-500 font-bold pl-1">I agree to the
-              <a href="#" class="text-pink-700 hover:underline">Terms and conditions.</a> ✮ ₊˚
-            </span>
+    <!-- Login container -->
+    <main class="flex-1 flex items-center justify-center p-4">
+      <div
+        class="border-2 border-pink-400 rounded-lg w-100 bg-pink-100 shadow-pink-300 shadow-lg"
+      >
+        <div class="p-4">
+          <div class="font-bold text-pink-600 text-xl text-center my-4">
+            Login ౨ৎ ⋆｡˚
           </div>
-         </div>
-        <!-- Sign in and Sign up -->
-         <div class="flex flex-row justify-between mt-3">
-          <button id="signIN" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-bold">Sign In</button>
-          <button onclick="window.location.href = '/signup_page'" class="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-lg font-bold">Sign Up</button>
-         </div>
+          <!-- Username -->
+          <div>
+            <div class="font-semibold text-pink-600">
+              <i class="fa-solid fa-user mr-1"></i>Username ⊹ ࣪ ˖ ໒꒱
+            </div>
+            <input
+              id="userName"
+              type="text"
+              class="w-full border border-pink-200 rounded-lg px-2 py-1 mt-2 mb-2 focus:bg-white"
+              placeholder="Username / Email"
+            />
+          </div>
+          <!-- Password  -->
+          <div>
+            <div class="font-semibold text-pink-600">
+              <i class="fa-solid fa-key mr-1"></i>Password ⊹ ࣪ ˖ ໒꒱
+            </div>
+            <input
+              id="userPassword"
+              type="password"
+              class="w-full border border-pink-200 rounded-lg px-2 py-1 mt-2 mb-2 focus:bg-white"
+              placeholder="Password"
+            />
+          </div>
+          <br /><br /><br />
+          <!-- T&C -->
+          <div>
+            <div class="flex">
+              <input
+                id="termAgreement"
+                type="checkbox"
+                class="flex items-center"
+              />
+              <span class="text-sm text-pink-500 font-bold pl-1"
+                >I agree to the
+                <a href="#" class="text-pink-700 hover:underline"
+                  >Terms and conditions.</a
+                >
+                ✮ ₊˚
+              </span>
+            </div>
+          </div>
+          <!-- Sign in and Sign up -->
+          <div class="flex flex-row justify-between mt-3">
+            <button
+              id="signIN"
+              class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-bold"
+            >
+              Sign In
+            </button>
+            <button
+              onclick="window.location.href = '/signup_page'"
+              class="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-lg font-bold"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </main>
 
     <script>
       async function sendAuthData(endpoint) {

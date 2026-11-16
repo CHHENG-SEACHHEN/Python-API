@@ -215,6 +215,9 @@
   .z-50 {
     z-index: 50;
   }
+  .float-left {
+    float: left;
+  }
   .float-right {
     float: right;
   }
@@ -718,6 +721,9 @@
     .sm\:flex {
       display: flex;
     }
+    .sm\:hidden {
+      display: none;
+    }
     .sm\:items-center {
       align-items: center;
     }
@@ -735,6 +741,12 @@
     }
     .lg\:hidden {
       display: none;
+    }
+    .lg\:justify-start {
+      justify-content: flex-start;
+    }
+    :is(.lg\:\*\:flex > *) {
+      display: flex;
     }
   }
 }

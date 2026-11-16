@@ -1,11 +1,31 @@
-from flask import Flask, render_template, request, jsonify
+from pathlib import Path
+
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import mysql.connector
 
-app = Flask(
-    __name__,
-    template_folder='New-template',
-    static_folder='static'
+BASE_DIR = Path(__file__).parent
+
+app = FastAPI()
+
+# Enable CORS for local development requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+# Mount static files and set up templates directory (absolute paths,
+# so it works no matter which folder you run the command from)
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR / "New-template")
+
 
 def get_db():
     return mysql.connector.connect(
@@ -15,87 +35,111 @@ def get_db():
         database="python_sql"
     )
 
-@app.route('/')
-def index():
-    return render_template('new home.html')
 
-@app.route('/about')
-def about():
-    return render_template('new about.html')
-
-
-@app.route('/sale')
-def sale():
-    return render_template('new sale.html')
+# Pydantic models for request body validation
+class SignInRequest(BaseModel):
+    username: str
+    password: str
+    agreed: bool
 
 
-@app.route('/contact')
-def contact():
-    return render_template('new contact.html')
+class SignUpRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+    agreed: bool
 
 
-@app.route('/checkout')
-def checkout():
-    return render_template('new checkout.html')
+# --- HTML Page Routes ---
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(request, "new home.html", {})
 
 
-@app.route('/login')
-def login():
-    return render_template('signin.html')
+@app.get("/about")
+def about(request: Request):
+    return templates.TemplateResponse(request, "new about.html", {})
 
-# Route to render the Signup page
-@app.route('/signup_page')
-def signup_page():
-    return render_template('signup.html')
 
-@app.route('/signin', methods=['POST'])
-def signin():
-    data = request.get_json()
-    identifier = data.get('username')
-    password = data.get('password')
-    agreed = data.get('agreed')
+@app.get("/sale")
+def sale(request: Request):
+    return templates.TemplateResponse(request, "new sale.html", {})
 
-    if not agreed:
-        return jsonify({"status": "error", "message": "You must agree to the terms and conditions."}), 400
+
+@app.get("/contact")
+def contact(request: Request):
+    return templates.TemplateResponse(request, "new contact.html", {})
+
+
+@app.get("/checkout")
+def checkout(request: Request):
+    return templates.TemplateResponse(request, "new checkout.html", {})
+
+
+@app.get("/login")
+def login(request: Request):
+    return templates.TemplateResponse(request, "signin.html", {})
+
+
+@app.get("/signup_page")
+def signup_page(request: Request):
+    return templates.TemplateResponse(request, "signup.html", {})
+
+
+# --- API Sign In Endpoint ---
+@app.post("/signin")
+def signin(data: SignInRequest):
+    if not data.agreed:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "You must agree to the terms and conditions."}
+        )
 
     db = get_db()
     cursor = db.cursor(dictionary=True)
-    query = "SELECT * FROM vw_users WHERE (user_name = %s OR email = %s) AND password = %s"
-    cursor.execute(query, (identifier, identifier, password))
-    user = cursor.fetchone()
-    cursor.close()
-    db.close()
+    try:
+        query = "SELECT * FROM vw_users WHERE (user_name = %s OR email = %s) AND password = %s"
+        cursor.execute(query, (data.username, data.username, data.password))
+        user = cursor.fetchone()
+    finally:
+        cursor.close()
+        db.close()
 
     if user:
-        role = str(user.get('type_name', '')).lower()
-        if 'admin' in role:
-            redirect_url = '/admin_dashboard'
-        elif 'cashier' in role:
-            redirect_url = '/cashier_dashboard'
+        role = str(user.get("type_name", "")).lower()
+        if "admin" in role:
+            redirect_url = "/admin_dashboard"
+        elif "cashier" in role:
+            redirect_url = "/cashier_dashboard"
         else:
-            redirect_url = '/user_dashboard'
+            redirect_url = "/user_dashboard"
 
-        return jsonify({
-            "status": "success", 
+        return {
+            "status": "success",
             "message": f"Welcome back, {user.get('full_name') or user.get('user_name')}!",
             "redirect": redirect_url
-        })
-        
-    return jsonify({"status": "error", "message": "Invalid username/email or password."}), 401
+        }
 
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.get_json()
-    username = data.get('username')
-    email = data.get('email')
-    password = data.get('password')
-    agreed = data.get('agreed')
+    return JSONResponse(
+        status_code=401,
+        content={"status": "error", "message": "Invalid username/email or password."}
+    )
 
-    if not agreed:
-        return jsonify({"status": "error", "message": "You must agree to the terms and conditions."}), 400
 
-    if not username or not email or not password:
-        return jsonify({"status": "error", "message": "All fields are required."}), 400
+# --- API Sign Up Endpoint ---
+@app.post("/signup")
+def signup(data: SignUpRequest):
+    if not data.agreed:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "You must agree to the terms."}
+        )
+
+    if not data.username or not data.email or not data.password:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "All fields are required."}
+        )
 
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -104,39 +148,59 @@ def signup():
         # Find 'customer' user_type_id by default
         cursor.execute("SELECT user_type_id FROM user_types WHERE type_name = 'customer'")
         type_result = cursor.fetchone()
-        
-        if not type_result:
-            return jsonify({"status": "error", "message": "Default 'customer' user type not found in database."}), 500
-        
-        customer_type_id = type_result['user_type_id']
 
-        # Changed 'active' to 1 since status is an integer column
+        if not type_result:
+            return JSONResponse(
+                status_code=500,
+                content={"status": "error", "message": "Default 'customer' user type not found in database."}
+            )
+
+        customer_type_id = type_result["user_type_id"]
+
         insert_query = """
-            INSERT INTO users (user_type_id, user_name, email, password, create_date, status) 
+            INSERT INTO users (user_type_id, user_name, email, password, create_date, status)
             VALUES (%s, %s, %s, %s, NOW(), 1)
         """
-        cursor.execute(insert_query, (customer_type_id, username, email, password))
+        cursor.execute(insert_query, (customer_type_id, data.username, data.email, data.password))
         db.commit()
-        
-        return jsonify({"status": "success", "message": "Account created successfully!", "redirect": "/"})
-    
+
+        return {
+            "status": "success",
+            "message": "Account created successfully!",
+            "redirect": "/login"
+        }
+
     except mysql.connector.Error as err:
-        return jsonify({"status": "error", "message": f"Database error: {err.msg}"}), 400
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": f"Database error: {err.msg}"}
+        )
     finally:
         cursor.close()
         db.close()
 
-@app.route('/admin_dashboard')
-def admin_dashboard():
-    return render_template('admin.html')
 
-@app.route('/cashier_dashboard')
-def cashier_dashboard():
-    return render_template('cashier.html')
+# --- Dashboard Routes ---
+@app.get("/admin_dashboard")
+def admin_dashboard(request: Request):
+    return templates.TemplateResponse(request, "admin.html", {})
 
-@app.route('/user_dashboard')
-def user_dashboard():
-    return render_template('new home.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.get("/cashier_dashboard")
+def cashier_dashboard(request: Request):
+    return templates.TemplateResponse(request, "cashier.html", {})
+
+
+@app.get("/user_dashboard")
+def user_dashboard(request: Request):
+    return templates.TemplateResponse(request, "new home.html", {})
+
+
+if __name__ == "__main__":
+    import threading
+    import webbrowser
+    import uvicorn
+
+    # Open the browser shortly after the server starts
+    threading.Timer(1.5, lambda: webbrowser.open("http://127.0.0.1:8000")).start()
+    uvicorn.run("main:app", host="127.0.0.1", port=8000)

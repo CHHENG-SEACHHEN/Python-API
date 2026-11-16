@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flamingo - About</title>
     <link
-      href="{{ url_for('static', filename='css/output.css') }}"
+      href="{{ url_for('static', path='css/output.css') }}"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/Python-API/static/css/output.css">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
@@ -27,7 +28,7 @@
         <div class="sm:float-left">
           <a href="/">
             <img
-              src="{{ url_for('static', filename='image/flamingo.png') }}"
+              src="{{ url_for('static', path='image/flamingo.png') }}"
               alt="flamingo logo"
               class="rounded-full size-[67px]"
             />

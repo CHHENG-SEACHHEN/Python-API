@@ -5,7 +5,7 @@
     <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="{{ url_for('static', filename='css/output.css') }}"
+      href="{{ url_for('static', path='css/output.css') }}"
       rel="stylesheet"
     />
     <link
@@ -113,7 +113,7 @@
 
         <!-- Back to login link -->
         <div class="p-2 text-sm">
-          <a href="/" class="text-blue-800 hover:underline"
+          <a href="/login" class="text-blue-800 hover:underline"
             >Already have an account? Sign In</a
           >
         </div>
@@ -124,16 +124,25 @@
       document
         .getElementById("signUP")
         .addEventListener("click", async function () {
-          const username = document.getElementById("userName").value;
-          const email = document.getElementById("email").value;
+          const username = document.getElementById("userName").value.trim();
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("userPassword").value;
-          const confirmPassword =
-            document.getElementById("confirmPassword").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
           const isAgreed = document.getElementById("termAgreement").checked;
 
-          // Frontend check to make sure passwords match before sending
+          // Frontend validation checks
+          if (!username || !email || !password || !confirmPassword) {
+            alert("All fields are required!");
+            return;
+          }
+
           if (password !== confirmPassword) {
             alert("Passwords do not match!");
+            return;
+          }
+
+          if (!isAgreed) {
+            alert("You must agree to the terms.");
             return;
           }
 

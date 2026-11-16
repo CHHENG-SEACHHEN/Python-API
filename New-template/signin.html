@@ -4,16 +4,14 @@
     <meta charset="UTF-8" />
     <title>Users List</title>
     <link
-      href="{{ url_for('static', filename='css/output.css') }}"
-      rel="stylesheet"
-    />
+      href="{{ url_for('static', path='css/output.css') }}"
+      rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
       integrity="..."
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+      referrerpolicy="no-referrer" />
   </head>
   <body class="bg-white h-screen flex items-center justify-center">
     <!-- container for login UI -->
@@ -35,8 +33,7 @@
               class="flex items-center justify-center px-1"
               type="text"
               placeholder="Username / Email"
-              id="userName"
-            />
+              id="userName" />
           </div>
 
           <div class="flex flex-col w-full pb-1">
@@ -49,8 +46,7 @@
               class="flex items-center justify-center px-1"
               type="text"
               placeholder="Password"
-              id="userPassword"
-            />
+              id="userPassword" />
           </div>
         </div>
 
@@ -59,8 +55,7 @@
           <input
             type="checkbox"
             class="flex justify-center items-center"
-            id="termAgreement"
-          />
+            id="termAgreement" />
           <span class="pl-1 flex justify-start items-center"
             >I agree to the
             <a href="#" class="text-blue-800 hover:underline pl-1"
@@ -73,22 +68,19 @@
         <div class="flex flex-row justify-between p-2">
           <button
             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
-            id="signIN"
-          >
+            id="signIN">
             Sign In
           </button>
           <button
             class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded"
-            onclick="window.location.href = '/signup_page'"
-          >
+            onclick="window.location.href = '/signup_page'">
             Sign Up
           </button>
         </div>
 
         <!-- icon -->
         <div
-          class="flex justify-start font-bold text-[20px] px-2 pb-2 pt-1 gap-2"
-        >
+          class="flex justify-start font-bold text-[20px] px-2 pb-2 pt-1 gap-2">
           <i class="fa-brands fa-telegram"></i>
           <i class="fa-brands fa-facebook-f"></i>
           <i class="fa-brands fa-tiktok"></i>
@@ -120,7 +112,6 @@
 
           if (response.ok) {
             alert(data.message);
-            // Handles page redirection if Flask sends a redirect route back
             if (data.redirect) {
               window.location.href = data.redirect;
             }
@@ -135,10 +126,6 @@
 
       document.getElementById("signIN").addEventListener("click", function () {
         sendAuthData("/signin");
-      });
-
-      document.getElementById("signUP").addEventListener("click", function () {
-        sendAuthData("/signup");
       });
     </script>
   </body>

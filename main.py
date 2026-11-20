@@ -193,7 +193,7 @@ def cashier_dashboard(request: Request):
 
 @app.get("/user_dashboard")
 def user_dashboard(request: Request):
-    return templates.TemplateResponse(request, "new home.html", {})
+    return templates.TemplateResponse(request, "home.html", {})
 
 
 if __name__ == "__main__":

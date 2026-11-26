@@ -93,7 +93,10 @@
               />
               <span class="text-sm text-pink-500 font-bold pl-1"
                 >I agree to the
-                <a id=termsToggle href="#" class="text-pink-700 hover:underline"
+                <a
+                  id="termsToggle"
+                  href="#"
+                  class="text-pink-700 hover:underline"
                   >Terms and conditions.</a
                 >
                 ✮ ₊˚
@@ -117,7 +120,8 @@
         </div>
       </div>
       <div
-        id=terms class="hidden absolute w-48 rounded-lg shadow-xl border-pink-400 border-2 overflow-hidden z-50 flex justify-center items-center"
+        id="terms"
+        class="hidden absolute w-48 rounded-lg shadow-xl border-pink-400 border-2 overflow-hidden z-50 flex justify-center items-center"
       >
         <div
           class="fixed w-90 h-120 overflow-y-auto bg-white text-pink-600 p-4 rounded-lg shadow-lg"
@@ -849,6 +853,32 @@
       </div>
     </main>
 
+    <div
+      id="modal-backdrop"
+      class="fixed inset-0 bg-pink-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-pink-300 border border-slate-700 rounded-2xl p-6 max-w-md w-full shadow-2xl transform transition-all"
+      >
+        <h3 id="modal-title" class="text-lg font-bold text-white mb-2">
+          Notice
+        </h3>
+        <p
+          id="modal-message"
+          class="text-slate-300 text-sm mb-5 leading-relaxed"
+        ></p>
+        <div id="modal-actions" class="flex justify-end gap-3">
+          <button
+            id="modal-primary-btn"
+            onclick="closeModal()"
+            class="bg-pink-600 hover:bg-pink-500 text-white font-medium px-4 py-2 rounded-xl text-sm transition shadow-lg shadow-pink-600/30"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       document
         .getElementById("signUP")
@@ -860,19 +890,41 @@
             document.getElementById("confirmPassword").value;
           const isAgreed = document.getElementById("termAgreement").checked;
 
+          function openModal(title, message) {
+            const backdrop = document.getElementById("modal-backdrop");
+            const titleEl = document.getElementById("modal-title");
+            const messageEl = document.getElementById("modal-message");
+
+            titleEl.textContent = title || "Notice";
+            messageEl.textContent = message || "";
+
+            backdrop.classList.remove("hidden");
+            backdrop.classList.add("flex");
+          }
+
+          function closeModal() {
+            const backdrop = document.getElementById("modal-backdrop");
+            const modalPrimaryBtn =
+              document.getElementById("modal-primary-btn");
+            backdrop.classList.add("hidden");
+            backdrop.classList.remove("flex");
+
+            modalPrimaryBtn.addEventListener("click", closeModal);
+          }
+
           // Frontend validation checks
           if (!username || !email || !password || !confirmPassword) {
-            alert("All fields are required!");
+            openModal("Notice", "All fields are required!");
             return;
           }
 
           if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            openModal("Notice", "Passwords do not match!");
             return;
           }
 
           if (!isAgreed) {
-            alert("You must agree to the terms.");
+            openModal("Notice", "You must agree to the terms.");
             return;
           }
 
@@ -891,17 +943,20 @@
             });
 
             const data = await response.json();
-            alert(data.message);
+            openModal(
+              response.ok ? "Notice" : "Error",
+              data.message || "Completed.",
+            );
 
             if (response.ok && data.redirect) {
               window.location.href = data.redirect;
             }
           } catch (error) {
             console.error("Error:", error);
-            alert("Something went wrong. Please try again.");
+            openModal("Data Error", "Something went wrong. Please try again.");
           }
         });
-      
+
       const menuToggle = document.getElementById("termsToggle");
       const dropdownMenu = document.getElementById("terms");
 
@@ -911,10 +966,7 @@
       });
 
       document.addEventListener("click", (e) => {
-        if (
-          !terms.contains(e.target) &&
-          !termsToggle.contains(e.target)
-        ) {
+        if (!terms.contains(e.target) && !termsToggle.contains(e.target)) {
           dropdownMenu.classList.add("hidden");
         }
       });

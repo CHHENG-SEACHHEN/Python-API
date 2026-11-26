@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flamingo - Home</title>
+    <title>Flamingo - About</title>
     <link
       href="{{ url_for('static', path='css/output.css') }}"
       rel="stylesheet"
     />
-    <link href="/static/css/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Python-API/static/css/output.css"/>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
@@ -18,6 +18,7 @@
     />
   </head>
   <body>
+    <!-- Header -->
     <header
       class="bg-pink-400 h-[90px] p-2 lg:flex sm:justify-between sm:items-center"
     >
@@ -27,7 +28,7 @@
         <div class="sm:float-left">
           <a href="/">
             <img
-              src="{{ url_for('static', path='image/flamingo.png') }}"
+              src="/Python-API/static/image/flamingo.png"
               alt="flamingo logo"
               class="rounded-full size-[67px]"
             />
@@ -103,12 +104,12 @@
         <nav>
           <a
             href="new home.html"
-            class="text-white mx-4 py-[32px] transition-colors font-semibold border-b-4 border-white"
+            class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
             >Home</a
           >
           <a
             href="/about"
-            class="text-gray-200 mx-4 py-[32px] transition-colors font-semibold hover:underline hover:text-white"
+            class="text-white mx-4 py-[32px] transition-colors font-semibold border-b-4 border-white"
             >About</a
           >
           <a
@@ -135,86 +136,56 @@
       </div>
     </header>
 
-    <div
-      class="flex justify-center mb-4 bg-pink-100 border-b-2 border-pink-400 sm:border-b-4"
-    >
-      <input
-        id="search"
-        class="inline-block border-2 border-pink-600 rounded-full px-4 h-12 w-[300px] py-2 mt-4 mb-2"
-        placeholder="Seach your books here"
-      />
-    </div>
-
-    <div class="flex justify-center">
-      <h1 class="text-[34px] font-bold text-pink-600 mb-5">
-        Welcome to our lil book store!
+    <div>
+      <h1 class="m-8 text-center font-bold text-pink-600 text-3xl">
+        About Us!
       </h1>
     </div>
 
-    <div class="m-4">
-      <div
-        class="text-2xl font-semibold text-pink-600 border-l-4 border-pink-400 pl-4 rounded"
-      >
-        Best Sellings
-      </div>
-
-      <div
-        class="text-2xl font-semibold text-pink-600 border-l-4 border-pink-400 pl-4 rounded"
-      >
-        Start Explore
-      </div>
-      <div class="lg:flex lg:justify-center lg:mb-16 lg:mt-4">
+    <div class="m-6 lg:max-w-200 lg:mx-auto">
+      <div class="border-[3px] border-pink-400 p-4 rounded-lg shadow-xl mb-4">
         <div
-          class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg text-center mb-5 lg:w-150 lg:h-70 lg:m-auto lg:flex lg:flex-col lg:items-center lg:justify-center"
+          class="pl-4 border-l-4 border-pink-400 rounded font-bold text-pink-600 text-lg mb-2"
         >
-          <h3 class="font-bold text-xl text-pink-600 lg:text-2xl lg:mb-4">
-            Featured Books
-          </h3>
-          <p>Check out all of our available books!</p>
-          <div class="flex justify-center">
-            <a
-              href="/sale"
-              class="border-2 border-pink-400 p-4 rounded-lg my-4 text-pink-600 font-semibold hover:bg-pink-400 hover:text-white hover:border-pink-600"
-            >
-              Explore Sales
-            </a>
-          </div>
+          Our Story
+        </div>
+        <div>
+          BookNest was created with the idea that everyone should have easy
+          access to books and knowledge. It aims to bring readers together by
+          offering a wide range of books. From bestsellers and classics to
+          educational and specialized titles.
         </div>
       </div>
-
-      <div
-        class="text-2xl font-semibold text-pink-600 border-l-4 border-pink-400 pl-4 rounded"
-      >
-        What we offers
+      <div class="border-[3px] border-pink-400 p-4 rounded-lg shadow-xl mb-4">
+        <div
+          class="pl-4 border-l-4 border-pink-400 rounded font-bold text-pink-600 text-lg mb-2"
+        >
+          Our Mission
+        </div>
+        <div>
+          Make books and knowledge accessible to everyone.Encourage a love of
+          reading and lifelong learning.Offer high-quality books at fair
+          prices.Create welcoming community for readers to discover, learn, and
+          share ideas. Inspire personal growth and positive change through
+          literature.
+        </div>
       </div>
-      <div class="lg:mb-16 lg:mt-4 lg:flex lg:justify-around">
-        <div class="lg:grid lg:grid-cols-3 lg:gap-8 lg:h-50 lg:my-auto">
-          <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
-            <h3 class="font-semibold text-lg">📦 Fast Delivery</h3>
-            <p class="p-3">
-              Get your books delivered quickly and safely right to your
-              doorstep. We partner with reliable couriers to ensure your next
-              great read arrives on time, every time, packaged securely to
-              prevent any damage.
-            </p>
-          </div>
-          <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
-            <h3 class="font-semibold text-lg">📖 Wide Selection</h3>
-            <p class="p-3">
-              Explore a vast collection of books across all genres, from
-              thrilling mysteries and gripping romances to timeless classics and
-              educational guides. There is always something new and exciting
-              waiting for you to discover.
-            </p>
-          </div>
-          <div class="border-2 border-pink-400 bg-pink-50 mt-2 p-3 rounded-lg">
-            <h3 class="font-semibold text-lg">💰 Great Prices</h3>
-            <p class="p-3">
-              Enjoy competitive everyday prices, seasonal promotions, and
-              special bundle offers. Building your personal home library has
-              never been this affordable or rewarding.
-            </p>
-          </div>
+      <div class="border-[3px] border-pink-400 p-4 rounded-lg shadow-xl mb-4">
+        <div
+          class="pl-4 border-l-4 border-pink-400 rounded font-bold text-pink-600 text-lg mb-2"
+        >
+          Our Team
+        </div>
+        <div>
+          We are a group of Year 1 IT students working together to build this
+          website.
+        </div>
+        <div>
+          <p class="pl-4 font-semibold text-red-500">CHHENG SEACHHEN</p>
+          <p class="pl-4 font-semibold text-yellow-500">CHHENG SEACHHEN</p>
+          <p class="pl-4 font-semibold text-pink-500">CHHENG SEACHHEN</p>
+          <p class="pl-4 font-semibold text-pink-600">CHHENG SEACHHEN</p>
+          <p class="pl-4 font-semibold text-pink-700">CHHENG SEACHHEN</p>
         </div>
       </div>
     </div>
@@ -229,11 +200,13 @@
       const menuToggle = document.getElementById("menuToggle");
       const dropdownMenu = document.getElementById("dropdownMenu");
 
+      // Toggle menu visibility
       menuToggle.addEventListener("click", (e) => {
         e.stopPropagation();
         dropdownMenu.classList.toggle("hidden");
       });
 
+      // Close menu when clicking outside
       document.addEventListener("click", (e) => {
         if (
           !dropdownMenu.contains(e.target) &&

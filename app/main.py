@@ -7,6 +7,42 @@ from schemas import UserSignup, UserSignin, CheckoutRequest
 from security import hash_password, verify_password, create_access_token
 
 app = FastAPI(title="Mini Book Shop API")
+
+
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(request, "home.html", {})
+
+
+@app.get("/about")
+def about(request: Request):
+    return templates.TemplateResponse(request, "about.html", {})
+
+
+@app.get("/sale")
+def sale(request: Request):
+    return templates.TemplateResponse(request, "sale.html", {})
+
+
+@app.get("/contact")
+def contact(request: Request):
+    return templates.TemplateResponse(request, "contact.html", {})
+
+
+@app.get("/checkout")
+def checkout(request: Request):
+    return templates.TemplateResponse(request, "checkout.html", {})
+
+
+@app.get("/login")
+def login(request: Request):
+    return templates.TemplateResponse(request, "signin.html", {})
+
+
+@app.get("/signup_page")
+def signup_page(request: Request):
+    return templates.TemplateResponse(request, "signup.html", {})
+
  
 # 1. Enable CORS so your frontend (e.g., localhost:5500 or localhost:3000) can talk to this API
 app.add_middleware(
@@ -56,7 +92,7 @@ def signup(user: UserSignup, db=Depends(get_db)):
     return {"message": "Account created successfully", "user_id": new_user_id}
 
 # 4. Signin Endpoint
-@app.post("/api/signin")
+@app.post("/signin")
 def signin(credentials: UserSignin, db=Depends(get_db)):
     if not credentials.agreed:
         raise HTTPException(status_code=400, detail="Please agree to the Terms and conditions.")
@@ -144,3 +180,17 @@ def checkout(order: CheckoutRequest, db=Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
+        
+@app.get("/admin_dashboard")
+def admin_dashboard(request: Request):
+    return templates.TemplateResponse(request, "admin.html", {})
+
+
+@app.get("/cashier_dashboard")
+def cashier_dashboard(request: Request):
+    return templates.TemplateResponse(request, "cashier.html", {})
+
+
+@app.get("/user_dashboard")
+def user_dashboard(request: Request):
+    return templates.TemplateResponse(request, "home.html", {})

@@ -1,146 +1,206 @@
-from fastapi import FastAPI, Depends, HTTPException, Query
+from pathlib import Path
+
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import mysql.connector
 
-from database import get_db
-from schemas import UserSignup, UserSignin, CheckoutRequest
-from security import hash_password, verify_password, create_access_token
+BASE_DIR = Path(__file__).parent
 
-app = FastAPI(title="Mini Book Shop API")
- 
-# 1. Enable CORS so your frontend (e.g., localhost:5500 or localhost:3000) can talk to this API
+app = FastAPI()
+
+# Enable CORS for local development requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace "*" with your frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 2. Book Search & Catalog Endpoint
-@app.get("/api/books")
-def search_books(
-    q: str = Query(default="", description="Search by title or author"),
-    db=Depends(get_db)
-):
-    cursor = db.cursor(dictionary=True)
-    if q:
-        search_term = f"%{q}%"
-        sql = "SELECT id, title, author, price, stock FROM books WHERE title LIKE %s OR author LIKE %s"
-        cursor.execute(sql, (search_term, search_term))
-    else:
-        cursor.execute("SELECT id, title, author, price, stock FROM books")
-    
-    books = cursor.fetchall()
-    cursor.close()
-    return {"books": books}
+# Mount static files and set up templates directory (absolute paths,
+# so it works no matter which folder you run the command from)
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR / "New-template")
 
-# 3. Signup Endpoint
-@app.post("/api/signup", status_code=201)
-def signup(user: UserSignup, db=Depends(get_db)):
-    cursor = db.cursor(dictionary=True)
-    
-    # Check if email already exists
-    cursor.execute("SELECT id FROM users WHERE email = %s", (user.email,))
-    if cursor.fetchone():
-        cursor.close()
-        raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_pw = hash_password(user.password)
-    sql = "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)"
-    cursor.execute(sql, (user.username, user.email, hashed_pw))
-    db.commit()
-    
-    new_user_id = cursor.lastrowid
-    cursor.close()
-    return {"message": "Account created successfully", "user_id": new_user_id}
-
-# 4. Signin Endpoint
-@app.post("/api/signin")
-def signin(credentials: UserSignin, db=Depends(get_db)):
-    if not credentials.agreed:
-        raise HTTPException(status_code=400, detail="Please agree to the Terms and conditions.")
-
-    cursor = db.cursor(dictionary=True)
-    cursor.execute(
-        "SELECT user_id, user_name, email, password FROM users WHERE user_name = %s",
-        (credentials.username,)
+def get_db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Callme099",
+        database="python_sql"
     )
-    user = cursor.fetchone()
-    cursor.close()
 
-    if not user or credentials.password != user["password"]:
-        raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    token = create_access_token({"sub": str(user["user_id"]), "email": user["email"]})
-    return {
-        "message": "Login successful!",
-        "access_token": token,
-        "token_type": "bearer",
-        "user": {
-            "user_id": user["user_id"],
-            "user_name": user["user_name"],
-            "email": user["email"]
-        }
-    }
+# Pydantic models for request body validation
+class SignInRequest(BaseModel):
+    username: str
+    password: str
+    agreed: bool
 
-# 5. Checkout & Price Calculation Endpoint (Transactional)
-@app.post("/api/checkout")
-def checkout(order: CheckoutRequest, db=Depends(get_db)):
-    if not order.items:
-        raise HTTPException(status_code=400, detail="Cart is empty")
 
+class SignUpRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+    agreed: bool
+
+
+# --- HTML Page Routes ---
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(request, "home.html", {})
+
+
+@app.get("/about")
+def about(request: Request):
+    return templates.TemplateResponse(request, "about.html", {})
+
+
+@app.get("/sale")
+def sale(request: Request):
+    return templates.TemplateResponse(request, "sale.html", {})
+
+
+@app.get("/contact")
+def contact(request: Request):
+    return templates.TemplateResponse(request, "contact.html", {})
+
+
+@app.get("/checkout")
+def checkout(request: Request):
+    return templates.TemplateResponse(request, "checkout.html", {})
+
+
+@app.get("/login")
+def login(request: Request):
+    return templates.TemplateResponse(request, "signin.html", {})
+
+
+@app.get("/signup_page")
+def signup_page(request: Request):
+    return templates.TemplateResponse(request, "signup.html", {})
+
+
+# --- API Sign In Endpoint ---
+@app.post("/signin")
+def signin(data: SignInRequest):
+    if not data.agreed:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "You must agree to the terms and conditions."}
+        )
+
+    db = get_db()
     cursor = db.cursor(dictionary=True)
     try:
-        # Start transaction so stock deduction and order creation succeed or fail together
-        db.start_transaction()
-        total_price = 0.0
-        verified_items = []
-
-        # Verify stock and fetch true prices from MySQL (never trust frontend prices!)
-        for item in order.items:
-            cursor.execute("SELECT id, title, price, stock FROM books WHERE id = %s FOR UPDATE", (item.book_id,))
-            book = cursor.fetchone()
-
-            if not book:
-                raise HTTPException(status_code=404, detail=f"Book ID {item.book_id} not found")
-            if book["stock"] < item.quantity:
-                raise HTTPException(status_code=400, detail=f"Not enough stock for '{book['title']}'")
-
-            item_total = float(book["price"]) * item.quantity
-            total_price += item_total
-            verified_items.append((book["id"], item.quantity, float(book["price"])))
-
-        # Create the main order record
-        cursor.execute(
-            "INSERT INTO orders (user_id, total_price) VALUES (%s, %s)",
-            (order.user_id, total_price)
-        )
-        order_id = cursor.lastrowid
-
-        # Insert order items and deduct stock
-        for book_id, qty, price in verified_items:
-            cursor.execute(
-                "INSERT INTO order_items (order_id, book_id, quantity, price_at_purchase) VALUES (%s, %s, %s, %s)",
-                (order_id, book_id, qty, price)
-            )
-            cursor.execute(
-                "UPDATE books SET stock = stock - %s WHERE id = %s",
-                (qty, book_id)
-            )
-
-        db.commit()
-        return {
-            "message": "Checkout successful",
-            "order_id": order_id,
-            "total_price": round(total_price, 2)
-        }
-
-    except HTTPException:
-        db.rollback()
-        raise
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        query = "SELECT * FROM vw_users WHERE (user_name = %s OR email = %s) AND password = %s"
+        cursor.execute(query, (data.username, data.username, data.password))
+        user = cursor.fetchone()
     finally:
         cursor.close()
+        db.close()
+
+    if user:
+        role = str(user.get("type_name", "")).lower()
+        if "admin" in role:
+            redirect_url = "/admin_dashboard"
+        elif "cashier" in role:
+            redirect_url = "/cashier_dashboard"
+        else:
+            redirect_url = "/user_dashboard"
+
+        return {
+            "status": "success",
+            "message": f"Welcome back, {user.get('full_name') or user.get('user_name')}!",
+            "redirect": redirect_url
+        }
+
+    return JSONResponse(
+        status_code=401,
+        content={"status": "error", "message": "Invalid username/email or password."}
+    )
+
+
+# --- API Sign Up Endpoint ---
+@app.post("/signup")
+def signup(data: SignUpRequest):
+    if not data.agreed:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "You must agree to the terms."}
+        )
+
+    if not data.username or not data.email or not data.password:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": "All fields are required."}
+        )
+
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    try:
+        # Find 'customer' user_type_id by default
+        cursor.execute("SELECT user_type_id FROM user_types WHERE type_name = 'customer'")
+        type_result = cursor.fetchone()
+
+        if not type_result:
+            return JSONResponse(
+                status_code=500,
+                content={"status": "error", "message": "Default 'customer' user type not found in database."}
+            )
+
+        customer_type_id = type_result["user_type_id"]
+
+        insert_query = """
+            INSERT INTO users (user_type_id, user_name, email, password, create_date, status)
+            VALUES (%s, %s, %s, %s, NOW(), 1)
+        """
+        cursor.execute(insert_query, (customer_type_id, data.username, data.email, data.password))
+        db.commit()
+
+        return {
+            "status": "success",
+            "message": "Account created successfully!",
+            "redirect": "/login"
+        }
+
+    except mysql.connector.Error as err:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "error", "message": f"Database error: {err.msg}"}
+        )
+    finally:
+        cursor.close()
+        db.close()
+
+
+# --- Dashboard Routes ---
+@app.get("/admin_dashboard")
+def admin_dashboard(request: Request):
+    return templates.TemplateResponse(request, "admin.html", {})
+
+
+@app.get("/cashier_dashboard")
+def cashier_dashboard(request: Request):
+    return templates.TemplateResponse(request, "cashier.html", {})
+
+
+@app.get("/user_dashboard")
+def user_dashboard(request: Request):
+    return templates.TemplateResponse(request, "home.html", {})
+
+
+if __name__ == "__main__":
+    import threading
+    import webbrowser
+    import uvicorn
+
+    # Open the browser shortly after the server starts
+    threading.Timer(1.5, lambda: webbrowser.open("http://127.0.0.1:8000")).start()
+    uvicorn.run("main:app", host="127.0.0.1", port=8000)
